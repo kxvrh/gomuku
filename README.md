@@ -1,6 +1,7 @@
 # gomuku
 
 相关概念
+
 https://en.wikipedia.org/wiki/Multi-armed_bandit
 
 https://en.wikipedia.org/wiki/Minimax
