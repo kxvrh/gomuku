@@ -1,6 +1,6 @@
 # gomuku
 
-相关概念
+Some concepts:
 
 https://en.wikipedia.org/wiki/Multi-armed_bandit
 
