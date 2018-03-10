@@ -5,6 +5,7 @@
 class Action
 {
 public:
+	Action() {};
 	Action(int ind, int player):_ind(ind), _player(player){};
 	~Action() {};
 	int get_x()const { return _ind / SIZE; }
