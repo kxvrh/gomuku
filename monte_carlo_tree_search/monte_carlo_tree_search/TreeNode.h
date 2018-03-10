@@ -4,14 +4,14 @@
 #include <ctime>
 #include "Action.h"
 #include "State.h"
-using namespace std;
+
 #define EPSILON 0.000001
 
 class TreeNode
 {
 public:
-	TreeNode(const State& state, Action& action, TreeNode* parent = NULL)
-		:_state(state), _action(action),_parent(parent),_value(0),_visits(0){}
+	TreeNode(State& state, TreeNode* parent = NULL)
+		:_state(state), _action(),_parent(parent),_value(0),_visits(0), _player_id(state.get_player_id()){}
 	~TreeNode(){}
 
 	const State& get_state() const { return _state; }
@@ -21,11 +21,18 @@ public:
 	int children_num()const { return _children.size(); }
 	double get_value()const { return _value; }
 	int get_visited()const { return _visits; }
+	int get_player()const { return _player_id; }
 
-	TreeNode* select();
+	TreeNode* add_child_with_action(Action& new_action);
+	TreeNode* get_most_visited_child();
+
+	TreeNode* select(double uct_k = sqrt(2));
 	TreeNode* expand();
 	void simulate();
-	void update(vector<double>reward);
+	void update(double reward);
+
+	bool is_terminal()const;
+	bool is_fully_expanded()const;
 	
 private:
 	//state of this node
@@ -43,9 +50,7 @@ private:
 	//num of being visited
 	int _visits;
 	//1 for player1, 2 for player2
-	int player_id;
+	int _player_id;
 	int depth;
-
-	TreeNode* add_child_with_action(Action& new_action);
 };
 
