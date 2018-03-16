@@ -1,11 +1,18 @@
 #include "TreeNode.h"
 
+const Action & TreeNode::get_action() const
+{
+	// TODO: insert return statement here
+	return _action;
+}
+
 TreeNode* TreeNode::add_child_with_action(Action& new_action)
 {
 	TreeNode* child = new TreeNode(_state, this);
 	child->_action = _action;
 	_children.push_back(child);
 	child->_state = _state.apply_action(new_action);
+	child->_action = new_action;
 	return child;
 }
 
@@ -16,9 +23,9 @@ TreeNode * TreeNode::get_most_visited_child()
 	for (int i = 0; i < _children.size(); i++)
 	{
 		TreeNode* node = this->get_child(i);
-		if (node->get_visited() > most_visited)
+		if (node->get_visited_num() > most_visited)
 		{
-			most_visited = node->get_visited;
+			most_visited = node->get_visited_num();
 			most_visited_child = node;
 		}
 	}
@@ -36,7 +43,7 @@ TreeNode * TreeNode::select(double uct_k)
 	{
 		TreeNode* child = _children[i];
 		double uct_exploitation = _value / _visits + EPSILON;
-		double uct_exploration = sqrt(log(_visits) / child->get_visited() + EPSILON);
+		double uct_exploration = sqrt(log(_visits) / child->get_visited_num() + EPSILON);
 		double uct_score = uct_exploitation + uct_k * uct_exploration;
 		if (uct_score > best_score)
 		{
@@ -51,22 +58,12 @@ TreeNode* TreeNode::expand()
 {
 	if (_actions.empty())
 	{
-		_actions = _state.get_actions();
+		_state.get_actions(_actions);
 	}
 	srand(time(0));
 	int random = rand() % _actions.size();
 	TreeNode* expanded_node = this->add_child_with_action(_actions[random]);
 	return expanded_node;
-}
-
-void TreeNode::simulate()
-{
-	while (!_actions.empty())
-	{
-		int random = rand() % _actions.size();
-		Action random_action = _actions[random];
-		_state.apply_action(random_action);
-	}
 }
 
 void TreeNode::update(double reward)
