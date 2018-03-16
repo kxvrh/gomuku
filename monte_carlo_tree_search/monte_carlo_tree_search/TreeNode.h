@@ -15,12 +15,12 @@ public:
 	~TreeNode(){}
 
 	const State& get_state() const { return _state; }
-	const Action& get_action() const { return _action; }
+	const Action& get_action() const;
 	TreeNode* get_parent() { return _parent; }
 	TreeNode* get_child(int i) { return _children[i]; }
 	int children_num()const { return _children.size(); }
 	double get_value()const { return _value; }
-	int get_visited()const { return _visits; }
+	int get_visited_num()const { return _visits; }
 	int get_player()const { return _player_id; }
 
 	TreeNode* add_child_with_action(Action& new_action);
@@ -28,7 +28,6 @@ public:
 
 	TreeNode* select(double uct_k = sqrt(2));
 	TreeNode* expand();
-	void simulate();
 	void update(double reward);
 
 	bool is_terminal()const;
@@ -51,6 +50,5 @@ private:
 	int _visits;
 	//1 for player1, 2 for player2
 	int _player_id;
-	int depth;
 };
 
