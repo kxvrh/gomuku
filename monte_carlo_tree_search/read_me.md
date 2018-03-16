@@ -102,13 +102,18 @@ bool is_over()const;
 //return 1 if player wins, 0 if player loses, 0.5 if draw
  
 double get_reward(int player)const;//返回权值
+
 //return player's id if player wins, -1 if no winner
 int has_a_winner()const;
+
 //1 for player1, 2 for player2
 int player_id;
+
 //all occupied actions
 vector<int>occupied;//棋盘中已被占据的位置
+ 
 //available actions, 0 for unavailable, 1 for available
 int available[GRID];//棋盘中空余位置
+
 //15x15 board
 int board[GRID];//棋盘
