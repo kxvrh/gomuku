@@ -1,15 +1,15 @@
 #pragma once
 
-#define SIZE 5
+#define SIZE 15
 
 class Action
 {
 public:
 	Action() {};
-	Action(int ind, int player):_ind(ind), _player(player){};
+	Action(int ind, int player);
 	~Action() {};
-	int get_x()const { return _ind / SIZE; }
-	int get_y()const { return _ind % SIZE; }
+	int get_x()const { return _ind / SIZE + 1; }
+	int get_y()const { return _ind % SIZE + 1; }
 	int get_ind()const { return _ind; }
 private:
 	int _ind;
