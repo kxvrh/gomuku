@@ -28,6 +28,8 @@ public:
 
 	//get all possible actions
 	void get_actions(vector<Action>&actions);
+	//more possible actions in current state(adjcent)
+	void get_adjcent_actions(vector<Action>&adjcent_actions);
 	//return false if no possible action found
 	bool get_random_action(Action& action);
 	State& apply_action(Action& new_action);
