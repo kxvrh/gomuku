@@ -25,13 +25,13 @@ void State::print_state()
 {
 	for (int i = 0; i < GRID; i++)
 	{
+		std::cout << " ";
 		if (board[i] == 0)
-			std::cout << '-';
+			std::cout << "-";
 		else if (board[i] == 1)
 			std::cout << "o";
 		else
 			std::cout << 'x';
-		std::cout << " ";
 		if ((i + 1) % SIZE == 0)
 			std::cout << std::endl;
 	}
@@ -51,9 +51,11 @@ double State::get_reward(int player) const
 {
 	double reward = 0;
 	if (has_a_winner() == player)
+		reward = 1000;
+	else if (has_a_winner() == -1)
 		reward = 1;
-	else if (occupied.size() == GRID)
-		reward = 0.5;
+	//else
+	//	reward = -100;
 	return reward;
 }
 
@@ -161,12 +163,51 @@ State::State(const State & other)
 
 void State::get_actions(vector<Action>&actions)
 {
+	actions.clear();
+	if (occupied.empty())
+	{
+		actions.push_back(Action(112, player_id));
+		return;
+	}
 	for (int i = 0; i < GRID; i++)
 	{
 		if (available[i] == 1)
 		{
 			actions.push_back(Action(i, player_id));	
 		}
+	}
+}
+
+void State::get_adjcent_actions(vector<Action>& adjcent_actions)
+{
+	adjcent_actions.clear();
+	if (occupied.empty())
+	{
+		adjcent_actions.push_back(Action(112, player_id));
+		return;
+	}
+	for (int i = 0; i < occupied.size(); i++)
+	{
+		int ind = occupied[i];
+		int ind_x = ind / SIZE;
+		int ind_y = ind % SIZE;
+		if (ind_x < SIZE - 1 && available[ind + 1] == 1)
+			adjcent_actions.push_back(Action(ind + 1, player_id));//右
+		if (ind_x > 0 && available[ind - 1] == 1)
+			adjcent_actions.push_back(Action(ind - 1, player_id));//左
+		if (ind_y > 0 && available[ind - SIZE] == 1)
+			adjcent_actions.push_back(Action(ind - SIZE, player_id));//下
+		if (ind_y < SIZE - 1 && available[ind + SIZE] == 1)
+			adjcent_actions.push_back(Action(ind + SIZE, player_id));//上
+		if (ind_x < SIZE - 1 && ind_y < SIZE - 1 && available[ind + 1 + SIZE] == 1)
+			adjcent_actions.push_back(Action(ind + 1 + SIZE, player_id));//右上
+		if (ind_x < SIZE - 1 && ind_y > 0 && available[ind + 1 - SIZE] == 1)
+			adjcent_actions.push_back(Action(ind + 1 - SIZE, player_id));//右下
+		if (ind_x > 0 && ind_y < SIZE - 1 && available[ind - 1 + SIZE] == 1)
+			adjcent_actions.push_back(Action(ind - 1 + SIZE, player_id));//左上
+		if (ind_x > 0 && ind_y > 0 && available[ind - 1 - SIZE] == 1)
+			adjcent_actions.push_back(Action(ind - 1 - SIZE, player_id));//左下
+		
 	}
 }
 
