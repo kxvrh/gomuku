@@ -2,8 +2,8 @@
 
 MCTS::MCTS()
 {
-	max_iter = 1000;
-	sim_depth = 10;
+	max_iter = 2000;
+	sim_depth = 15;
 	uct_k = log(2);
 }
 
@@ -31,12 +31,12 @@ Action MCTS::run(State & state)
 			for(int i = 0;i<sim_depth;i++)
 			{
 				vector<Action>actions;
-				state.get_actions(actions);
+				state.get_adjcent_actions(actions);
 				Action action;
 				if (state.get_random_action(action))
 				{
 					state.apply_action(action);
-					state.get_actions(actions);
+					state.get_adjcent_actions(actions);
 				}
 				else
 					break;
